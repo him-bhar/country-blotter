@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.himanshu.countryblotter.domain.deserializer.CountryDeserializer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -21,6 +22,7 @@ public class CountryDeserializationTest {
     objectMapper.registerModule(simpleModule);
   }
 
+  @DisplayName("Deserialization of Country JSON")
   @Test
   public void testDesrialization() throws IOException {
     String path = CountryDeserializationTest.class.getResource("/").getFile().concat("/CountryJson.json");

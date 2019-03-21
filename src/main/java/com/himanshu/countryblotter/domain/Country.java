@@ -1,9 +1,13 @@
 package com.himanshu.countryblotter.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.himanshu.countryblotter.domain.deserializer.CountryDeserializer;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
+@JsonDeserialize(using = CountryDeserializer.class)
 public class Country implements Serializable {
   private String name;
   private String[] topLevelDomain;

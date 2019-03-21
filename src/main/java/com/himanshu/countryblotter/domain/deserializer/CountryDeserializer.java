@@ -14,6 +14,10 @@ import java.util.List;
 
 public class CountryDeserializer extends StdDeserializer<Country> {
 
+  public CountryDeserializer() {
+    super(Country.class);
+  }
+
   public CountryDeserializer(Class<?> vc) {
     super(vc);
   }
