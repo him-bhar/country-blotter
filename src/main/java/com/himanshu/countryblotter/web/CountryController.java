@@ -2,6 +2,8 @@ package com.himanshu.countryblotter.web;
 
 import com.himanshu.countryblotter.domain.Country;
 import com.himanshu.countryblotter.fetcher.ICountryFetcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import java.util.List;
 @RequestMapping("/countries")
 public class CountryController {
 
+  private static final Logger logger = LoggerFactory.getLogger(CountryController.class);
+
   @Autowired
   private ICountryFetcher<Country> countryFetcher;
 
@@ -26,7 +30,7 @@ public class CountryController {
 
   @RequestMapping(path = {"/{country-code}"}, method = {RequestMethod.GET})
   public ResponseEntity<List<Country>> getCountryByCode(@PathVariable("country-code") String countryCode) {
-    System.out.println("Looking for country: "+countryCode);
+    logger.info("Looking for country: "+countryCode);
     Country country = countryFetcher.fetchCountry(countryCode);
     if (country != null) {
       return new ResponseEntity(countryFetcher.fetchCountry(countryCode), HttpStatus.OK);

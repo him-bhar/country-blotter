@@ -6,6 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * application-{spring-profile}.properties, it gets activated when you use -Dspring.profiles.active=<profile-name>
+ * If logging needs to be done on file then, start this class with additional property: -Dlogs.dir=C:/himanshu_work/tmp/logs
  */
 @SpringBootApplication
 public class Main {
