@@ -15,6 +15,8 @@
     <mockito.version>2.24.0</mockito.version>
     <maven-surefire.plugin>2.22.0</maven-surefire.plugin>
     <janino.version>3.0.6</janino.version>
+    <springfox.swagger.version>2.8.0</springfox.swagger.version>
+    <jaxb-api.version>2.1</jaxb-api.version>
   </properties>
 
   <parent>
@@ -67,6 +69,28 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
+    </dependency>
+
+    <!-- Swagger dependencies -->
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>${springfox.swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>${springfox.swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-bean-validators</artifactId>
+      <version>${springfox.swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.xml</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>${jaxb-api.version}</version>
     </dependency>
 
   </dependencies>
