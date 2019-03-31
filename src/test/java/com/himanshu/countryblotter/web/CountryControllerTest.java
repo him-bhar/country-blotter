@@ -75,4 +75,18 @@ public class CountryControllerTest {
                 MockMvcResultMatchers.jsonPath("$.[?(@.name!='')].name", Matchers.containsInAnyOrder("India", "United States of America"))
           );
   }
+
+  @Test
+  public void testGetAllCountriesWithError() throws Exception {
+    Mockito.when(countryFetcher.fetchAllCountries()).thenThrow(new NullPointerException("Blah blah blah!"));
+    mockMvc
+          .perform(
+                MockMvcRequestBuilders.get("/countries/all").contentType(MediaType.APPLICATION_JSON)
+          )
+          .andDo(MockMvcResultHandlers.print())
+          .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+          .andExpect(
+                MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8)
+          );
+  }
 }
