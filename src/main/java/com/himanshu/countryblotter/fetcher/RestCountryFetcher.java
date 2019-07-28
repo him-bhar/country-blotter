@@ -2,6 +2,10 @@ package com.himanshu.countryblotter.fetcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.himanshu.countryblotter.domain.Country;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,6 +19,7 @@ public class RestCountryFetcher implements ICountryFetcher<Country> {
   private final String getCountryApiSubUri;
   private final ObjectMapper mapper;
   private final RestTemplate restTemplate;
+  private static final Logger LOG = LoggerFactory.getLogger(RestCountryFetcher.class);
 
   public RestCountryFetcher(String baseCountryApiUri, String allCountriesApiSubUri, String getCountryApiSubUri,
                             ObjectMapper objectMapper, RestTemplate restTemplate) {
@@ -35,8 +40,10 @@ public class RestCountryFetcher implements ICountryFetcher<Country> {
     }
   }
 
+  @Cacheable(cacheNames = {"countryCache"}, key = "#countryCode")
   @Override
   public Country fetchCountry(String countryCode) {
+    LOG.info("Fetching country : [{}] from REST API", countryCode);
     ResponseEntity<String> response = restTemplate.getForEntity(this.baseCountryApiUri.concat(this.getCountryApiSubUri.replace("%(country-code)", countryCode)), String.class, new HashMap<>());
     try {
       return this.mapper.readValue(response.getBody(), Country.class);
