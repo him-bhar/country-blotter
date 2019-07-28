@@ -40,7 +40,8 @@ public class RestCountryFetcher implements ICountryFetcher<Country> {
     }
   }
 
-  @Cacheable(cacheNames = {"countryCache"}, key = "#countryCode")
+  //unless is a negative condition, as below says if result is null. Don't cache it.
+  @Cacheable(cacheNames = {"countryCache"}, key = "#countryCode", unless = "#result == null")
   @Override
   public Country fetchCountry(String countryCode) {
     LOG.info("Fetching country : [{}] from REST API", countryCode);
