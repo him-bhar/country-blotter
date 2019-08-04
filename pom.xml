@@ -131,6 +131,16 @@
         </includes>
         <filtering>true</filtering>
       </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <!-- Resource filering usually is ${property}, but because of spring boot its, @property@} -->
+          <exclude>logback.xml</exclude>
+          <exclude>logback-console.xml</exclude>
+          <exclude>logback-file.xml</exclude>
+        </excludes>
+        <filtering>false</filtering>
+      </resource>
     </resources>
     <plugins>
       <plugin>
