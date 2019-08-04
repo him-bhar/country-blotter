@@ -20,6 +20,7 @@
     <jaxb-api.version>2.1</jaxb-api.version>
     <ehcache.version>3.8.0</ehcache.version>
     <assembly.plugin.version>3.1.1</assembly.plugin.version>
+    <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
   </properties>
 
   <parent>
@@ -119,101 +120,187 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <!-- Resource filering usually is ${property}, but because of spring boot its, @property@} -->
-          <include>logback.xml</include>
-          <include>logback-console.xml</include>
-          <include>logback-file.xml</include>
-        </includes>
-        <filtering>true</filtering>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-        <excludes>
-          <!-- Resource filering usually is ${property}, but because of spring boot its, @property@} -->
-          <exclude>logback.xml</exclude>
-          <exclude>logback-console.xml</exclude>
-          <exclude>logback-file.xml</exclude>
-        </excludes>
-        <filtering>false</filtering>
-      </resource>
-    </resources>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compile-plugin-version}</version>
-        <configuration>
-          <source>${java-source-version}</source>
-          <target>${java-target-version}</target>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
+  <profiles>
+    <profile>
+      <id>non-travis-profile</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+              <!-- Resource filering usually is ${property}, but because of spring boot its, @property@} -->
+              <include>logback.xml</include>
+              <include>logback-console.xml</include>
+              <include>logback-file.xml</include>
+            </includes>
+            <filtering>true</filtering>
+          </resource>
+          <resource>
+            <directory>src/main/resources</directory>
+            <excludes>
+              <!-- Resource filering usually is ${property}, but because of spring boot its, @property@} -->
+              <exclude>logback.xml</exclude>
+              <exclude>logback-console.xml</exclude>
+              <exclude>logback-file.xml</exclude>
+            </excludes>
+            <filtering>false</filtering>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven-compile-plugin-version}</version>
             <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>${project.artifactId}</artifactId>
-                  <version>${project.version}</version>
-                  <outputDirectory>${project.build.directory}/conf</outputDirectory>
-                  <includes>**\/logback.xml</includes>
-                </artifactItem>
-              </artifactItems>
+              <source>${java-source-version}</source>
+              <target>${java-target-version}</target>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
+          </plugin>
+          <!--<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>${project.artifactId}</artifactId>
+                      <version>${project.version}</version>
+                      <outputDirectory>${project.build.directory}/conf</outputDirectory>
+                      <includes>**/logback.xml</includes>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>-->
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>${maven.resources.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <!-- here the phase you need -->
+                <phase>compile</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${basedir}/target/conf</outputDirectory>
+                  <resources>
+                    <resource>
+                      <!--<directory>src/main/resources</directory>-->
+                      <directory>${basedir}/target/classes/</directory>
+                      <includes>
+                        <include>logback.xml</include>
+                      </includes>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <!-- exclude logback.xml -->
-          <excludes>
-            <exclude>**/logback.xml</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven-surefire.plugin}</version>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>${assembly.plugin.version}</version>
-        <executions>
-          <execution>
-            <id>zip-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
             <configuration>
-              <descriptors>
-                <descriptor>src/assembly/blotter-assembly.xml</descriptor>
-              </descriptors>
+              <!-- exclude logback.xml -->
+              <excludes>
+                <exclude>**/logback.xml</exclude>
+              </excludes>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${maven-surefire.plugin}</version>
+          </plugin>
+
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>${assembly.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>zip-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/assembly/blotter-assembly.xml</descriptor>
+                  </descriptors>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>travis-profile</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+              <!-- Resource filering usually is ${property}, but because of spring boot its, @property@} -->
+              <include>logback.xml</include>
+              <include>logback-console.xml</include>
+              <include>logback-file.xml</include>
+            </includes>
+            <filtering>true</filtering>
+          </resource>
+          <resource>
+            <directory>src/main/resources</directory>
+            <excludes>
+              <!-- Resource filering usually is ${property}, but because of spring boot its, @property@} -->
+              <exclude>logback.xml</exclude>
+              <exclude>logback-console.xml</exclude>
+              <exclude>logback-file.xml</exclude>
+            </excludes>
+            <filtering>false</filtering>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven-compile-plugin-version}</version>
+            <configuration>
+              <source>${java-source-version}</source>
+              <target>${java-target-version}</target>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${maven-surefire.plugin}</version>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
