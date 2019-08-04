@@ -198,7 +198,6 @@
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>${assembly.plugin.version}</version>
-
         <executions>
           <execution>
             <id>zip-assembly</id>
@@ -206,15 +205,14 @@
             <goals>
               <goal>single</goal>
             </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/assembly/blotter-assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <descriptors>
-            <descriptor>src/assembly/blotter-assembly.xml</descriptor>
-          </descriptors>
-        </configuration>
       </plugin>
-
     </plugins>
   </build>
 
