@@ -13,10 +13,9 @@
     </then>
     <else>
       <include resource="logback-console.xml" />
-      <logger name="com.himanshu" level="debug" additivity="false">
-        <appender-ref ref="STDOUT"/>
-      </logger>
-      <root level="error">
+      <logger name="com.himanshu" level="debug" additivity="false" />
+      <logger name="org.springframework.security" level="debug" additivity="false" />
+      <root level="info">
         <appender-ref ref="STDOUT"/>
       </root>
     </else>

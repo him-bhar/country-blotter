@@ -7,6 +7,7 @@ import org.springframework.cache.interceptor.*;
 import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
@@ -29,11 +30,19 @@ public class CacheConfiguration implements CachingConfigurer {
                 .setStoreByValue(false)
                 .setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE));
 
-    cacheManager.createCache("countryCache", configuration);
-    cacheManager.enableManagement("countryCache", true);
-    cacheManager.enableStatistics("countryCache", true);
+
+    prepareCache(cacheManager, configuration, "countryCache");
 
     return new JCacheCacheManager(cacheManager);
+  }
+
+  private void prepareCache(javax.cache.CacheManager cacheManager, MutableConfiguration configuration,
+                            String cacheName) {
+    if (cacheManager.getCache(cacheName) == null) {
+      cacheManager.createCache(cacheName, configuration);
+      cacheManager.enableManagement(cacheName, true);
+      cacheManager.enableStatistics(cacheName, true);
+    }
   }
 
   @Bean

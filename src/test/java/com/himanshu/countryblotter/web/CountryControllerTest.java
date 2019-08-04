@@ -10,6 +10,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -20,20 +27,31 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
+@WithMockUser(username = "test")
 public class CountryControllerTest {
   @Autowired
   private MockMvc mockMvc;
+
+  /*@Autowired
+  private WebApplicationContext wac;
+
+  @BeforeEach
+  public void setup() {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(SecurityMockMvcConfigurers.springSecurity())
+          .build();
+  }*/
 
   @MockBean
   private ICountryFetcher<Country> countryFetcher;
 
   @Test
   public void testGetCountryByCode() throws Exception {
+    //setupCredentialsAndAuthority("ROLE_TEST");
     Mockito.when(countryFetcher.fetchCountry("in"))
           .thenReturn(new Country("India", new String[]{".in"}, new String[]{"91"}, "delhi", new String[]{"pak", "ban"}));
     mockMvc
           .perform(
-                MockMvcRequestBuilders.get("/countries/in").contentType(MediaType.APPLICATION_JSON)
+                MockMvcRequestBuilders.get("/api/countries/in").contentType(MediaType.APPLICATION_JSON)
           )
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isOk())
@@ -50,7 +68,7 @@ public class CountryControllerTest {
     Mockito.when(countryFetcher.fetchCountry("zz")).thenReturn(null);
     mockMvc
           .perform(
-                MockMvcRequestBuilders.get("/countries/zz").contentType(MediaType.APPLICATION_JSON)
+                MockMvcRequestBuilders.get("/api/countries/zz").contentType(MediaType.APPLICATION_JSON)
           )
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -64,7 +82,7 @@ public class CountryControllerTest {
     Mockito.when(countryFetcher.fetchAllCountries()).thenReturn(countries);
     mockMvc
           .perform(
-                MockMvcRequestBuilders.get("/countries/all").contentType(MediaType.APPLICATION_JSON)
+                MockMvcRequestBuilders.get("/api/countries/all").contentType(MediaType.APPLICATION_JSON)
           )
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isOk())
@@ -81,12 +99,22 @@ public class CountryControllerTest {
     Mockito.when(countryFetcher.fetchAllCountries()).thenThrow(new NullPointerException("Blah blah blah!"));
     mockMvc
           .perform(
-                MockMvcRequestBuilders.get("/countries/all").contentType(MediaType.APPLICATION_JSON)
+                MockMvcRequestBuilders.get("/api/countries/all").contentType(MediaType.APPLICATION_JSON)
           )
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isInternalServerError())
           .andExpect(
                 MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8)
           );
+  }
+
+  private void setupCredentialsAndAuthority(String role) {
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority(role));
+    Authentication auth = new UsernamePasswordAuthenticationToken("Mr. Big", "password", authorities);
+
+    SecurityContextImpl securityContext = new SecurityContextImpl();
+    securityContext.setAuthentication(auth);
+    SecurityContextHolder.setContext(securityContext);
   }
 }

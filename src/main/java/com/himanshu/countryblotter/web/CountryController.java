@@ -17,13 +17,16 @@ import java.util.List;
 
 @Api(value = "Querying countries REST API")
 @RestController
-@RequestMapping("/countries")
+@RequestMapping("/api/countries")
 public class CountryController {
 
   private static final Logger logger = LoggerFactory.getLogger(CountryController.class);
 
-  @Autowired
   private ICountryFetcher<Country> countryFetcher;
+
+  public CountryController(@Autowired ICountryFetcher<Country> countryFetcher) {
+    this.countryFetcher = countryFetcher;
+  }
 
   @ApiOperation(value = "List all countries", httpMethod = "GET", produces = "application/json", response = List.class
         /*, authorizations = {
