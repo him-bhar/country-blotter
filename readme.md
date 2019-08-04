@@ -94,14 +94,17 @@
          return connector;
        }
      ````
+    To run the application:
+    \
+    Run this file:
+    \
+    `com.himanshu.countryblotter.Main`
+    \
+    With the following JVM parameters:
+    \
+    `-Dspring.profiles.active=uat` 
 
-To run the application:
+1. ######How to package the project:
+pom.xml has been enhanced to package all the dependencies into a zip file.
 \
-Run this file:
-\
-`com.himanshu.countryblotter.Main`
-\
-With the following JVM parameters: 
-\
-`-Dspring.profiles.active=uat` 
-
+`mvn clean package` 
