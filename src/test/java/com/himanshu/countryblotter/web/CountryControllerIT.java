@@ -15,6 +15,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.Base64;
 
 //Only to be tested locally
 @Ignore
@@ -27,7 +28,7 @@ public class CountryControllerIT {
    */
   @Test
   public void testGetAllCountries() throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
-    URL obj = new URL("https://localhost:8443/countries/all");
+    URL obj = new URL("https://localhost:8443/api/countries/all");
     HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
     con.setSSLSocketFactory(sslSocketFactory());
     con.setHostnameVerifier(new HostnameVerifier() {
@@ -40,6 +41,7 @@ public class CountryControllerIT {
       }
     });
     con.setRequestMethod("GET");
+    con.setRequestProperty("Authorization", "Basic "+generateAuthorizationValue());
     int responseCode = con.getResponseCode();
     log.info("GET Response Code :: " + responseCode);
     if (responseCode == HttpURLConnection.HTTP_OK) { // success
@@ -52,8 +54,13 @@ public class CountryControllerIT {
       in.close();
       log.info(response.toString());
     } else {
-      Assertions.fail("Non OK HTTP Response");
+
+      Assertions.fail("Non OK HTTP Response HTTP-"+responseCode);
     }
+  }
+
+  private String generateAuthorizationValue() {
+    return Base64.getEncoder().encodeToString("user:password".getBytes());
   }
 
   private SSLSocketFactory sslSocketFactory() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
