@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace="com.himanshu.countryblotter.dao.ICountryDao">
+  <select id="selectAll" resultMap="countryResultMap">
+      SELECT name, capital FROM country
+  </select>
+  <select id="selectAllAsMap" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+      SELECT name, capital FROM country
+  </select>
+  <insert id="save" parameterType="com.himanshu.countryblotter.domain.Country">
+      insert into country (name, capital) values (#{name}, #{capital})
+  </insert>
+
+  <resultMap id="countryResultMap" type="com.himanshu.countryblotter.domain.Country">
+    <id property="name" column="name" />
+    <result property="capital" column="capital"/>
+  </resultMap>
+
+</mapper>

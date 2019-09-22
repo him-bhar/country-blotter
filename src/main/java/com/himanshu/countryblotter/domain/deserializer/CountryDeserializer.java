@@ -39,7 +39,7 @@ public class CountryDeserializer extends StdDeserializer<Country> {
 
   private List<String> extractFromArrayNodeWithKey(JsonNode node, String nodeKey) {
     List<String> domains = new ArrayList<>();
-    if (node.get(nodeKey).isArray()) {
+    if (node.get(nodeKey) != null && node.get(nodeKey).isArray()) {
       ArrayNode arrayNode = (ArrayNode) node.get(nodeKey);
       for (int i=0; i<arrayNode.size(); i++) {
         domains.add(arrayNode.get(i).asText());

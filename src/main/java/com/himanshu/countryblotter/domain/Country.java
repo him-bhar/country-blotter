@@ -15,6 +15,9 @@ public class Country implements Serializable {
   private String capital;
   private String[] borders;
 
+  public Country() {
+  }
+
   public Country(String name, String[] topLevelDomain, String[] callingCodes, String capital, String[] borders) {
     this.name = name;
     this.topLevelDomain = topLevelDomain;

@@ -2,18 +2,17 @@ package com.himanshu.countryblotter.web;
 
 import com.himanshu.countryblotter.domain.Country;
 import com.himanshu.countryblotter.fetcher.ICountryFetcher;
+import com.himanshu.countryblotter.service.CountryService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(value = "Querying countries REST API")
 @RestController
@@ -23,9 +22,11 @@ public class CountryController {
   private static final Logger logger = LoggerFactory.getLogger(CountryController.class);
 
   private ICountryFetcher<Country> countryFetcher;
+  private CountryService countryService;
 
-  public CountryController(@Autowired ICountryFetcher<Country> countryFetcher) {
+  public CountryController(@Autowired ICountryFetcher<Country> countryFetcher, @Autowired CountryService countryService) {
     this.countryFetcher = countryFetcher;
+    this.countryService = countryService;
   }
 
   @ApiOperation(value = "List all countries", httpMethod = "GET", produces = "application/json", response = List.class
@@ -40,7 +41,9 @@ public class CountryController {
   })
   @RequestMapping(path = {"/all"}, method = {RequestMethod.GET})
   public ResponseEntity<List<Country>> getAllCountries() {
-    return new ResponseEntity(countryFetcher.fetchAllCountries(), HttpStatus.OK);
+    //return new ResponseEntity(countryFetcher.fetchAllCountries(), HttpStatus.OK);
+    //return new ResponseEntity(countryDao.selectAll(), HttpStatus.OK);
+    return new ResponseEntity(countryService.getAllCountries(), HttpStatus.OK);
   }
 
   @ApiOperation(value = "Get a country by country-code", httpMethod = "GET", produces = "application/json", response = Country.class)
@@ -58,5 +61,29 @@ public class CountryController {
     } else {
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
+  }
+
+  @ApiOperation(value = "Add a new country", httpMethod = "POST", produces = "application/json", response = Boolean.class)
+  @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully retrieved country"),
+        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+  })
+  @RequestMapping(method = {RequestMethod.POST})
+  public ResponseEntity<Boolean> addCountry(@RequestBody Country country) {
+    logger.info("Adding a new country: {}", country);
+    countryService.saveCountry(country);
+    return new ResponseEntity<>(true, HttpStatus.OK);
+  }
+
+  @ApiOperation(value = "List all countries as map", httpMethod = "GET", produces = "application/json", response = Country.class)
+  @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully retrieved country"),
+        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+  })
+  @RequestMapping(value = "/map", method = {RequestMethod.GET})
+  public ResponseEntity<List<Map>> listCountriesAsMap() {
+    return new ResponseEntity<>(countryService.getAllCountriesAsMap(), HttpStatus.OK);
   }
 }

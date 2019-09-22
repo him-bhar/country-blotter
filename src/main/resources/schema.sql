@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS `country`(
+    `name` VARCHAR(100) NOT NULL PRIMARY KEY,
+    `capital` VARCHAR(100) NOT NULL
+);
