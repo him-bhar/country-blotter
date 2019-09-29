@@ -1,8 +1,10 @@
 package com.himanshu.countryblotter.web;
 
+import com.himanshu.countryblotter.dao.ICountryDao;
 import com.himanshu.countryblotter.domain.Country;
-import com.himanshu.countryblotter.fetcher.ICountryFetcher;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +43,20 @@ public class CountryControllerTest {
           .build();
   }*/
 
+  //@MockBean
+  //private ICountryFetcher<Country> countryFetcher;
+
   @MockBean
-  private ICountryFetcher<Country> countryFetcher;
+  private ICountryDao countryDao;
 
   @Test
   public void testGetCountryByCode() throws Exception {
     //setupCredentialsAndAuthority("ROLE_TEST");
-    Mockito.when(countryFetcher.fetchCountry("in"))
+    Mockito.when(countryDao.getCountryByName("India"))
           .thenReturn(new Country("India", new String[]{".in"}, new String[]{"91"}, "delhi", new String[]{"pak", "ban"}));
     mockMvc
           .perform(
-                MockMvcRequestBuilders.get("/api/countries/in").contentType(MediaType.APPLICATION_JSON)
+                MockMvcRequestBuilders.get("/api/countries/India").contentType(MediaType.APPLICATION_JSON)
           )
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isOk())
@@ -65,7 +70,7 @@ public class CountryControllerTest {
 
   @Test
   public void testGetCountryByInvalidCode() throws Exception {
-    Mockito.when(countryFetcher.fetchCountry("zz")).thenReturn(null);
+    Mockito.when(countryDao.getCountryByName("zz")).thenReturn(null);
     mockMvc
           .perform(
                 MockMvcRequestBuilders.get("/api/countries/zz").contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +84,7 @@ public class CountryControllerTest {
     List<Country> countries = new ArrayList<>();
     countries.add(new Country("India", new String[]{".in"}, new String[]{"91"}, "delhi", new String[]{"pak", "ban"}));
     countries.add(new Country("United States of America", new String[]{".us"}, new String[]{"1"}, "washington", new String[]{"mexico", "canada"}));
-    Mockito.when(countryFetcher.fetchAllCountries()).thenReturn(countries);
+    Mockito.when(countryDao.selectAll()).thenReturn(countries);
     mockMvc
           .perform(
                 MockMvcRequestBuilders.get("/api/countries/all").contentType(MediaType.APPLICATION_JSON)
@@ -94,9 +99,11 @@ public class CountryControllerTest {
           );
   }
 
+  @Ignore
   @Test
+  @DisplayName("Throw error when remote service has issues")
   public void testGetAllCountriesWithError() throws Exception {
-    Mockito.when(countryFetcher.fetchAllCountries()).thenThrow(new NullPointerException("Blah blah blah!"));
+    Mockito.when(countryDao.selectAll()).thenThrow(new NullPointerException("Blah blah blah!"));
     mockMvc
           .perform(
                 MockMvcRequestBuilders.get("/api/countries/all").contentType(MediaType.APPLICATION_JSON)

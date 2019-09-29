@@ -9,7 +9,7 @@
     </layout>
   </appender>
 
-  <logger name="com.himanshu" level="debug" additivity="false" />
+  <logger name="com.himanshu" level="debug" additivity="true" />
 
   <root level="info">
     <appender-ref ref="STDOUT"/>

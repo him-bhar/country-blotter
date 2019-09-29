@@ -12,6 +12,12 @@
   <insert id="save" parameterType="com.himanshu.countryblotter.domain.Country">
       insert into country (name, capital) values (#{name}, #{capital})
   </insert>
+  <select id="getCountryByName" resultMap="countryResultMap">
+      SELECT name, capital FROM country where name=#{countryName}
+  </select>
+  <delete id="removeAllCountries">
+    delete from country
+  </delete>
 
   <resultMap id="countryResultMap" type="com.himanshu.countryblotter.domain.Country">
     <id property="name" column="name" />

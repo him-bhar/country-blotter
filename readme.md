@@ -105,6 +105,15 @@
     `-Dspring.profiles.active=uat` 
 
 1. ######How to package the project:
-pom.xml has been enhanced to package all the dependencies into a zip file.
-\
-`mvn clean package` 
+   pom.xml has been enhanced to package all the dependencies into a zip file.
+   \
+   `mvn clean package`
+   
+1. ######Compatibility with spring-boot-2.1:
+   1. ######Bean Overriding
+   `spring.main.allow-bean-definition-overriding=true`
+   **Bean overriding has been disabled by default** to prevent a bean 
+   being accidentally overridden. If you are relying on overriding, 
+   you will need to set *spring.main.allow-bean-definition-overriding to true*.
+
+1. 

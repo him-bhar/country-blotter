@@ -25,6 +25,7 @@
     <mybatis.version>3.5.2</mybatis.version>
     <mybatis.spring.version>2.0.2</mybatis.spring.version>
     <mybatis.springboot.version>2.1.0</mybatis.springboot.version>
+    <lombok.version>1.18.10</lombok.version>
   </properties>
 
   <parent>
@@ -143,6 +144,13 @@
       <artifactId>mybatis-spring</artifactId>
       <version>${mybatis.spring.version}</version>
     </dependency>-->
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-test</artifactId>
