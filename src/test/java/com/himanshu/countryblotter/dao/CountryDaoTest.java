@@ -3,7 +3,6 @@ package com.himanshu.countryblotter.dao;
 import com.himanshu.countryblotter.Main;
 import com.himanshu.countryblotter.TestDBConfigurer;
 import com.himanshu.countryblotter.domain.Country;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class CountryDaoTest {
 
   @Test
   public void testSave() {
-    Country country = Country.builder().name("Test-Country").capital("test-capital").build();
+    Country country = Country.builder().name("Test-Country").code("tc").capital("test-capital").build();
     countryDao.save(country);
     List<Country> countries = countryDao.selectAll();
     Assertions.assertAll(

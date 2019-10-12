@@ -4,16 +4,19 @@
 
 <mapper namespace="com.himanshu.countryblotter.dao.ICountryDao">
   <select id="selectAll" resultMap="countryResultMap">
-      SELECT name, capital FROM country
+      SELECT name, code, capital FROM country
   </select>
   <select id="selectAllAsMap" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-      SELECT name, capital FROM country
+      SELECT name, code, capital FROM country
   </select>
   <insert id="save" parameterType="com.himanshu.countryblotter.domain.Country">
-      insert into country (name, capital) values (#{name}, #{capital})
+      insert into country (name, code, capital) values (#{name}, #{code}, #{capital})
   </insert>
   <select id="getCountryByName" resultMap="countryResultMap">
-      SELECT name, capital FROM country where name=#{countryName}
+      SELECT name, code, capital FROM country where name=#{countryName}
+  </select>
+  <select id="getCountryByCode" resultMap="countryResultMap">
+      SELECT name, code, capital FROM country where code=#{code}
   </select>
   <delete id="removeAllCountries">
     delete from country
@@ -21,6 +24,7 @@
 
   <resultMap id="countryResultMap" type="com.himanshu.countryblotter.domain.Country">
     <id property="name" column="name" />
+    <id property="code" column="code" />
     <result property="capital" column="capital"/>
   </resultMap>
 

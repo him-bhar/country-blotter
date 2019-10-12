@@ -26,11 +26,12 @@ public class CountryDeserializer extends StdDeserializer<Country> {
   public Country deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
     JsonNode node = jsonParser.getCodec().readTree(jsonParser);
     String countryName = node.get("name").asText();
+    String code = node.get("alpha2Code").asText();
     String capital = node.get("capital").asText();
     List<String> domains = extractFromArrayNodeWithKey(node, "topLevelDomain");
     List<String> callingCodes = extractFromArrayNodeWithKey(node, "callingCodes");
     List<String> borders = extractFromArrayNodeWithKey(node, "borders");
-    return new Country(countryName,
+    return new Country(countryName, code,
           domains.toArray(new String[domains.size()]),
           callingCodes.toArray(new String[callingCodes.size()]),
           capital,

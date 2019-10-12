@@ -52,11 +52,11 @@ public class CountryControllerTest {
   @Test
   public void testGetCountryByCode() throws Exception {
     //setupCredentialsAndAuthority("ROLE_TEST");
-    Mockito.when(countryDao.getCountryByName("India"))
-          .thenReturn(new Country("India", new String[]{".in"}, new String[]{"91"}, "delhi", new String[]{"pak", "ban"}));
+    Mockito.when(countryDao.getCountryByCode("IN"))
+          .thenReturn(new Country("India", "IN", new String[]{".in"}, new String[]{"91"}, "delhi", new String[]{"pak", "ban"}));
     mockMvc
           .perform(
-                MockMvcRequestBuilders.get("/api/countries/India").contentType(MediaType.APPLICATION_JSON)
+                MockMvcRequestBuilders.get("/api/countries/IN").contentType(MediaType.APPLICATION_JSON)
           )
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isOk())
@@ -82,8 +82,8 @@ public class CountryControllerTest {
   @Test
   public void testGetAllCountries() throws Exception {
     List<Country> countries = new ArrayList<>();
-    countries.add(new Country("India", new String[]{".in"}, new String[]{"91"}, "delhi", new String[]{"pak", "ban"}));
-    countries.add(new Country("United States of America", new String[]{".us"}, new String[]{"1"}, "washington", new String[]{"mexico", "canada"}));
+    countries.add(new Country("India", "IN", new String[]{".in"}, new String[]{"91"}, "delhi", new String[]{"pak", "ban"}));
+    countries.add(new Country("United States of America", "US", new String[]{".us"}, new String[]{"1"}, "washington", new String[]{"mexico", "canada"}));
     Mockito.when(countryDao.selectAll()).thenReturn(countries);
     mockMvc
           .perform(

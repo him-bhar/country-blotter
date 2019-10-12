@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS `country`(
     `name` VARCHAR(100) NOT NULL PRIMARY KEY,
+    `code` VARCHAR(10) NOT NULL,
     `capital` VARCHAR(100) NOT NULL
 );

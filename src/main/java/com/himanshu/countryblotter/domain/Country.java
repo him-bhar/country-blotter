@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Getter
 public class Country implements Serializable {
   private String name;
+  private String code;
   private String[] topLevelDomain;
   private String[] callingCodes;
   private String capital;

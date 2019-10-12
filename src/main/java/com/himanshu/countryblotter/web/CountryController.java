@@ -1,7 +1,6 @@
 package com.himanshu.countryblotter.web;
 
 import com.himanshu.countryblotter.domain.Country;
-import com.himanshu.countryblotter.fetcher.ICountryFetcher;
 import com.himanshu.countryblotter.service.CountryService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -21,11 +20,9 @@ public class CountryController {
 
   private static final Logger logger = LoggerFactory.getLogger(CountryController.class);
 
-  private ICountryFetcher<Country> countryFetcher;
   private CountryService countryService;
 
-  public CountryController(@Autowired ICountryFetcher<Country> countryFetcher, @Autowired CountryService countryService) {
-    this.countryFetcher = countryFetcher;
+  public CountryController(@Autowired CountryService countryService) {
     this.countryService = countryService;
   }
 
@@ -55,9 +52,9 @@ public class CountryController {
   @RequestMapping(path = {"/{country-code}"}, method = {RequestMethod.GET})
   public ResponseEntity<List<Country>> getCountryByCode(@ApiParam(value = "Country code", required = true) @PathVariable("country-code") String countryCode) {
     logger.info("Looking for country: "+countryCode);
-    Country country = countryFetcher.fetchCountry(countryCode);
+    Country country = countryService.getCountryByCode(countryCode);
     if (country != null) {
-      return new ResponseEntity(countryFetcher.fetchCountry(countryCode), HttpStatus.OK);
+      return new ResponseEntity(country, HttpStatus.OK);
     } else {
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }

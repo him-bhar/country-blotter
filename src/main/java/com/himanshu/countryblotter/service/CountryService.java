@@ -32,4 +32,9 @@ public class CountryService {
   public List<Map> getAllCountriesAsMap() {
     return this.countryDao.selectAllAsMap();
   }
+
+  @Transactional(readOnly = true)
+  public Country getCountryByCode(String code) {
+    return this.countryDao.getCountryByCode(code);
+  }
 }
