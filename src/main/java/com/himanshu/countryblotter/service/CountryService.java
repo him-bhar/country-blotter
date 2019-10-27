@@ -3,6 +3,7 @@ package com.himanshu.countryblotter.service;
 import com.himanshu.countryblotter.dao.ICountryDao;
 import com.himanshu.countryblotter.domain.Country;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +12,11 @@ import java.util.Map;
 
 @Component
 public class CountryService {
+  private final CacheManager cacheManager;
   private final ICountryDao countryDao;
 
-  public CountryService(@Autowired ICountryDao countryDao) {
+  public CountryService(@Autowired CacheManager cacheManager, @Autowired ICountryDao countryDao) {
+    this.cacheManager = cacheManager;
     this.countryDao = countryDao;
   }
 
