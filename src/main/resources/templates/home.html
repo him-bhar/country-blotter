@@ -2,9 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Home Page</title>
+        <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
     </head>
     <body>
         <h1>Hello !</h1>
         <p>Welcome to <span th:text="${appName}">Our App</span></p>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                console.log('test message');
+                alert('Example of a basic alert box in jquery');
+            });
+        </script>
     </body>
 </html>
