@@ -256,6 +256,8 @@
                       <directory>${basedir}/target/classes/</directory>
                       <includes>
                         <include>logback.xml</include>
+                        <include>countries.json</include>
+                        <include>keystore.p12</include>
                       </includes>
                       <filtering>true</filtering>
                     </resource>
@@ -272,6 +274,8 @@
               <!-- exclude logback.xml -->
               <excludes>
                 <exclude>**/logback.xml</exclude>
+                <exclude>countries.json</exclude>
+                <exclude>keystore.p12</exclude>
               </excludes>
             </configuration>
           </plugin>
@@ -318,6 +322,8 @@
               <include>logback.xml</include>
               <include>logback-console.xml</include>
               <include>logback-file.xml</include>
+              <include>countries.json</include>
+              <include>keystore.p12</include>
             </includes>
             <filtering>true</filtering>
           </resource>
@@ -328,6 +334,8 @@
               <exclude>logback.xml</exclude>
               <exclude>logback-console.xml</exclude>
               <exclude>logback-file.xml</exclude>
+              <exclude>countries.json</exclude>
+              <exclude>keystore.p12</exclude>
             </excludes>
             <filtering>false</filtering>
           </resource>

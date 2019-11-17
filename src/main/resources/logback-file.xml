@@ -1,6 +1,6 @@
 <included>
   <appender name="FILE-AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${logs.dir}/logs/debug.log</file>
+    <file>${logs.dir}/logs/${spring.application.name}.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <Pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</Pattern>
     </encoder>

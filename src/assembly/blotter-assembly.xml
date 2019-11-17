@@ -9,11 +9,30 @@
     <fileSet>
       <directory>${project.basedir}/conf</directory>
     </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/scripts</directory>
+    </fileSet>
   </fileSets>
   <files>
     <file>
       <source> ${project.build.directory}/conf/logback.xml</source>
       <outputDirectory>./conf</outputDirectory>
+      <filtered>false</filtered>
+    </file>
+    <file>
+      <source> ${project.build.directory}/conf/countries.json</source>
+      <outputDirectory>./conf</outputDirectory>
+      <filtered>false</filtered>
+    </file>
+    <file>
+      <source>${project.basedir}/src/scripts/start.bat</source>
+      <outputDirectory>./scripts</outputDirectory>
+      <filtered>false</filtered>
+    </file>
+    <file>
+      <source>${project.basedir}/src/main/resources/keystore.p12</source>
+      <outputDirectory>./conf</outputDirectory>
+      <filtered>false</filtered>
     </file>
   </files>
   <componentDescriptors>
