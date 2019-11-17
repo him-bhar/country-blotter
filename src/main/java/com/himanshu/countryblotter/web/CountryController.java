@@ -40,7 +40,7 @@ public class CountryController {
   public ResponseEntity<List<Country>> getAllCountries() {
     //return new ResponseEntity(countryFetcher.fetchAllCountries(), HttpStatus.OK);
     //return new ResponseEntity(countryDao.selectAll(), HttpStatus.OK);
-    return new ResponseEntity(countryService.getAllCountries(), HttpStatus.OK);
+    return new ResponseEntity(countryService.getAll(), HttpStatus.OK);
   }
 
   @ApiOperation(value = "Get a country by country-code", httpMethod = "GET", produces = "application/json", response = Country.class)
@@ -52,7 +52,7 @@ public class CountryController {
   @RequestMapping(path = {"/{country-code}"}, method = {RequestMethod.GET})
   public ResponseEntity<List<Country>> getCountryByCode(@ApiParam(value = "Country code", required = true) @PathVariable("country-code") String countryCode) {
     logger.info("Looking for country: "+countryCode);
-    Country country = countryService.getCountryByCode(countryCode);
+    Country country = countryService.getByCode(countryCode);
     if (country != null) {
       return new ResponseEntity(country, HttpStatus.OK);
     } else {
@@ -60,7 +60,7 @@ public class CountryController {
     }
   }
 
-  @ApiOperation(value = "Add a new country", httpMethod = "POST", produces = "application/json", response = Boolean.class)
+  /*@ApiOperation(value = "Add a new country", httpMethod = "POST", produces = "application/json", response = Boolean.class)
   @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved country"),
         @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -73,7 +73,7 @@ public class CountryController {
     return new ResponseEntity<>(true, HttpStatus.OK);
   }
 
-  @ApiOperation(value = "List all countries as map", httpMethod = "GET", produces = "application/json", response = Country.class)
+  *//*@ApiOperation(value = "List all countries as map", httpMethod = "GET", produces = "application/json", response = Country.class)
   @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved country"),
         @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -82,5 +82,5 @@ public class CountryController {
   @RequestMapping(value = "/map", method = {RequestMethod.GET})
   public ResponseEntity<List<Map>> listCountriesAsMap() {
     return new ResponseEntity<>(countryService.getAllCountriesAsMap(), HttpStatus.OK);
-  }
+  }*/
 }
