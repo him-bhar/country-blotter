@@ -49,6 +49,7 @@ public class CountryControllerTest {
   private ICountryFetcher<Country> countryFetcher;
 
   @Test
+  @DisplayName("Test get country by code")
   public void testGetCountryByCode() throws Exception {
     //setupCredentialsAndAuthority("ROLE_TEST");
     Mockito.when(countryFetcher.fetchCountry("IN"))
