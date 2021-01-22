@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class CountryDeserializer extends StdDeserializer<Country> {
 
   public CountryDeserializer() {
