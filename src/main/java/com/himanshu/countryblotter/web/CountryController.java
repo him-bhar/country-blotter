@@ -60,7 +60,7 @@ public class CountryController {
     }
   }
 
-  /*@ApiOperation(value = "Add a new country", httpMethod = "POST", produces = "application/json", response = Boolean.class)
+  @ApiOperation(value = "Add a new country", httpMethod = "POST", produces = "application/json", response = Boolean.class)
   @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved country"),
         @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -69,11 +69,12 @@ public class CountryController {
   @RequestMapping(method = {RequestMethod.POST})
   public ResponseEntity<Boolean> addCountry(@RequestBody Country country) {
     logger.info("Adding a new country: {}", country);
-    countryService.saveCountry(country);
+    // NOOP
+    // countryService.saveCountry(country);
     return new ResponseEntity<>(true, HttpStatus.OK);
   }
 
-  *//*@ApiOperation(value = "List all countries as map", httpMethod = "GET", produces = "application/json", response = Country.class)
+  /*@ApiOperation(value = "List all countries as map", httpMethod = "GET", produces = "application/json", response = Country.class)
   @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved country"),
         @ApiResponse(code = 401, message = "You are not authorized to view the resource"),

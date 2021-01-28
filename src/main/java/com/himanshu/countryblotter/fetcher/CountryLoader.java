@@ -38,8 +38,7 @@ public class CountryLoader {
     List<Country> countries = objectMapper.readValue(countriesFile, new TypeReference<List<Country>>() {});
     Map<String, Country> countryMapByCode = countries.stream().collect(Collectors.toMap(country -> country.getCode(), country -> country,
           (oldVal, newVal) -> oldVal));
-    Map<String, Country> resultMap = Maps.newHashMap();
-    return resultMap.get(s);
+    return countryMapByCode.get(s);
   }
 
   public Map<String, Country> loadAll() throws Exception {

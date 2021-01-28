@@ -14,7 +14,8 @@
     <else>
       <include resource="logback-console.xml" />
       <logger name="com.himanshu" level="debug" additivity="true" />
-      <logger name="org.springframework.security" level="debug" additivity="false" />
+      <logger name="org.springframework.security" level="debug" additivity="true"  />
+      <logger name="org.springframework.web" level="debug" additivity="true"  />
       <root level="INFO">
         <appender-ref ref="STDOUT"/>
       </root>

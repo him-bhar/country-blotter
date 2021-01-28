@@ -52,6 +52,7 @@ public class ApiSecurityConfiguration extends WebSecurityConfigurerAdapter {
     return super.authenticationManager();
   }
 
+  //This is for setting up CORS when integrating with angular for UI
   @Bean
   protected CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
