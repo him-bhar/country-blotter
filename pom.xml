@@ -21,7 +21,7 @@
     <ehcache.version>3.8.0</ehcache.version>
     <assembly.plugin.version>3.1.1</assembly.plugin.version>
     <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
-    <h2.version>1.4.199</h2.version>
+    <h2.version>2.0.206</h2.version>
     <mybatis.version>3.5.2</mybatis.version>
     <mybatis.spring.version>2.0.2</mybatis.spring.version>
     <mybatis.springboot.version>2.1.0</mybatis.springboot.version>
